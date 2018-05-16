@@ -27,7 +27,7 @@ SECRET_KEY = '2on7ogf5(oq)^g8+fw%mc82+upi-+s(q%t94&jan@)eewflk=d'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True   # 生产模式下应为关闭
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.penguinhlx.club']   # 设置允许访问的主机，域名前加点表示可访问二级域名
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.penguinhlx.club','120.78.213.145']   # 设置允许访问的主机，域名前加点表示可访问二级域名
 
 
 # Application definition
