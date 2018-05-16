@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User   # 引入处理用户交互的流程（登陆，注册等）
 from django.urls import reverse   # 用于生成post必要的包
+import markdown   # 引入makedown语法包
+from django.utils.html import strip_tags   # 引入makedown转html包
 
 # 更改模型后须迁移数据库
 # Create your models here.
@@ -45,5 +47,15 @@ class Post(models.Model):
         self.views += 1
         self.save(update_fields=['views'])
 
+    def save(self, *args, **kwargs):
+        if not self.excerpt:
+            md = markdown.Markdown(extensions=['markdown.extensions.extra',
+                                               'markdown.extensions.codehilite',
+            ])   # 实例化markdown类，用于渲染body文本，这里为什么
+            self.excerpt = strip_tags(md.convert(self.body))[:54]
+            # 转换makedown为html-->去html标签-->复制给摘录对象
+        super(Post, self).save(*args, **kwargs)   # 调用父类，保存文章数据库
+
     class Meta:   # 通过models的内部类规定这个类的共有特性
         ordering = ['-created_time', 'title']
+
