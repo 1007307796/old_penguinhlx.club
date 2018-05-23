@@ -20,6 +20,65 @@ class IndexView(ListView):   # 类视图
     model = Post
     template_name = 'blog/index.html'
     context_object_name = 'post_list'   # 指定获取的模型列表数据保存的变量名,将传递给模板
+    paginate_by = 3   # 开启分页功能
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)  # 获取父类生成的字典
+        paginator = context.get('paginator')
+        page = context.get('page_obj')
+        is_paginated = context.get('is_paginated')
+        # 父类中已有上述三个变量
+        pagination_data = self.pagination_data(paginator, page, is_paginated)
+        # 利用下面的pagination_data方法获取所需数据
+        context.update(pagination_data)  # 将函数返回的字典更新到页面中
+        return context  # 将更新后的页面返回，以便ListView去渲染变量
+
+    def pagination_data(self, paginator, page, is_paginated):
+        if not is_paginated:
+            return {}  # 如果没有分页，则无需显示导航条
+        left = []
+        right = []
+        left_has_more = False
+        right_has_more = False  # 是否需要省略号展示更多
+        first = False
+        last = False  # 是否需要单独显示首页和尾页
+        page_number = page.number  # 当前网页
+        total_pages = paginator.num_pages  # 分页后的总数
+        page_range = paginator.page_range  # 分类后的数组列表[1.2.3.4....]
+        # 初始化各个变量
+        if page_number == 1:  # 当当前为第一页时
+            right = page_range[page_number:page_number + 2]  # 获取右边页码数组
+            if right[-1] < total_pages - 1:  # 是否显示右侧省略号
+                right_has_more = True
+            if right[-1] < total_pages:  # 是否需要单独显示页尾
+                last = True
+        elif page_number == total_pages:
+            left = page_range[(page_number - 3) if (page_number - 3) > 0 else 0:page_number - 1]
+            # 当用户请求最后一页时，显示左边数据状态
+            if left[0] > 2:
+                left_has_more = True  # 是否显示右侧省略号
+            if left[0] > 1:
+                first = True  # 是否需要单独显示页首
+        else:  # 用户请求的既不是首页也不是尾页
+            left = page_range[(page_number - 3) if (page_number - 3) > 0 else 0:page_number - 1]
+            right = page_range[page_number:page_number + 2]
+            if right[-1] < total_pages - 1:
+                right_has_more = True
+            if right[-1] < total_pages:
+                last = True
+            if left[0] > 2:
+                left_has_more = True
+            if left[0] > 1:
+                first = True
+        data = {
+            'left': left,
+            'right': right,
+            'left_has_more': left_has_more,
+            'right_has_more': right_has_more,
+            'first': first,
+            'last': last,
+        }
+        return data
 
 
 '''转换函数视图
@@ -61,6 +120,7 @@ class PostDetailView(DetailView):
         return post
 
     def get_context_data(self, **kwargs):   # 将post下评论传递给模板
+        # 函数视图中，传递模板变量通过render实现，而在类视图中，通过get_context_data来实现
         context = super(PostDetailView, self).get_context_data(**kwargs)
         form = CommentForm()
         comment_list = self.object.comment_set.all()
@@ -68,7 +128,7 @@ class PostDetailView(DetailView):
             'form': form,
             'comment_list': comment_list
         })
-        return context   # 返回模板变量字典httpResponse，传递给模板
+        return context  # 返回模板变量字典httpResponse，传递给模板
 
 
 '''
