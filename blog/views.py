@@ -1,6 +1,6 @@
 import markdown
 from django.shortcuts import render, get_object_or_404
-from .models import Post, Category
+from .models import Post, Category, Tag
 from comments.forms import CommentForm   # 更新文章详情页的视图函数
 from django.views.generic import ListView, DetailView   # 引入类列表（多条）视图包和类数据（某一条）视图包
 from django.http import HttpResponse
@@ -163,3 +163,13 @@ class CategoryView(IndexView):   # 继承IndexView，简约代码
         cate = get_object_or_404(Category, pk=self.kwargs.get('pk'))
         # *args表示任何多个无名参数,**kwargs表示关键字参数，它是一个dict
         return super(CategoryView, self).get_queryset().filter(category=cate)
+
+
+class TagView(ListView):
+    model = Post
+    template_name = 'blog/index.html'   # 复用index.html的模板
+    context_object_name = 'post_list'
+
+    def get_queryset(self):
+        tag = get_object_or_404(Tag, pk=self.kwargs.get('pk'))
+        return super(TagView, self).get_queryset().filter(tags=tag)

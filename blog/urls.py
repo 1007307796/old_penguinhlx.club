@@ -8,6 +8,7 @@ urlpatterns = [
     # 正则式()里面为提取参数，传给视图detail函数
     url('archives/(?P<year>[0-9]{4})/(?P<month>[0-9]{1,2})/', views.ArchivesView.as_view(), name='archives'),
     url('category/(?P<pk>[0-9]+)/', views.CategoryView.as_view(), name='category'),
+    url('tag/(?P<pk>[0-9]+)/', views.TagView.as_view(), name='tag'),
     url('', views.IndexView.as_view(), name='index'),   # as_views()将类转换为函数
     # url('', views.index, name='index'),
     # 网址参数（正则表达式）/处理函数/起个别名，便于操作
