@@ -3,6 +3,9 @@ from django.shortcuts import render, get_object_or_404
 from .models import Post, Category, Tag
 from comments.forms import CommentForm   # 更新文章详情页的视图函数
 from django.views.generic import ListView, DetailView   # 引入类列表（多条）视图包和类数据（某一条）视图包
+from django.utils.text import slugify   # 引入自动生成目录支持中文的包
+from markdown.extensions.toc import TocExtension
+from django.db.models import Q   # 用于包装查询表达式，提供复杂的查询逻辑
 from django.http import HttpResponse
 
 # Create your views here.
@@ -109,14 +112,26 @@ class PostDetailView(DetailView):
         self.object.increase_views()   # 调用阅读量增加1的函数
         return response   # 视图必须返回一个httprespnse对象
 
-    def get_object(self, queryset=None):   # 对post的body值进行渲染
-        post = super(PostDetailView, self).get_object(queryset=None)
+    def get_object(self, queryset=None):   # 对post的body值进行渲染,queryset:查询设置
+        """   覆写get_object()方法，改成对body值进行渲染
         post.body = markdown.markdown(post.body,
                                       extensions=[  # extensions为markdown的参数
                                           'markdown.extensions.extra',
                                           'markdown.extensions.codehilite',  # 语法高亮拓展
                                           'markdown.extensions.toc',  # 自动生成目录
                                       ])
+        return post
+        """
+        post = super(PostDetailView, self).get_object(queryset=None)
+        md = markdown.Markdown(extensions=[  # extensions为markdown的参数
+                            'markdown.extensions.extra',
+                            'markdown.extensions.codehilite',  # 语法高亮拓展
+                            # 'markdown.extensions.toc',  # 自动生成目录
+                            TocExtension(slugify=slugify),
+                            # 将toc拓展为一个实例，参数接受一个函数，处理标题的中文锚点值
+        ])
+        post.body = md.convert(post.body)   # 用convert将makedown文本渲染为html文本
+        post.toc = md.toc   # 动态为post添加toc属性
         return post
 
     def get_context_data(self, **kwargs):   # 将post下评论传递给模板
@@ -173,3 +188,15 @@ class TagView(ListView):
     def get_queryset(self):
         tag = get_object_or_404(Tag, pk=self.kwargs.get('pk'))
         return super(TagView, self).get_queryset().filter(tags=tag)
+
+
+def search(request):
+    q = request.GET.get('q')   # get方法提交的数据保存在request.GET的字典中
+    error_msg = ''
+    if not q:
+        error_msg = "请输入关键词"
+        return render(request, 'blog/index.html', {'error_msg': error_msg})
+    post_list = Post.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+    # icontains为查询表达式，用法：模型属性后面跟两个下划线
+    return render(request, 'blog/index.html', {'error_msg': error_msg,
+                                               'post_list': post_list})

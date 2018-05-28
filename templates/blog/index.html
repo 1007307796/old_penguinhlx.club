@@ -1,6 +1,9 @@
 {% extends 'base.html' %}<!--继承base.html,必须是在最顶行-->
 
 {% block main %}<!--blog里有内容时，会显示-->
+    {% if error_msg %}
+        <p>{{ error_msg }}</p><!--显示错误信息-->
+    {% endif %}
     {% for post in post_list %}
         <article class="post post-{{ post.pk}}">   <!--pk为primary key,为数据库中记录的id的值-->
             <header class="entry-header">
