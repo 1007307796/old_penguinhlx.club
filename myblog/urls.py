@@ -20,6 +20,7 @@ from blog.feeds import AllPostsRssFeed
 # 当新建一个应用的时候必须包含在总urls.py文件里面
 urlpatterns = [
     path('', include('comments.urls')),
+    path('search/', include('haystack.urls')),
     path('all/rss/', AllPostsRssFeed(), name='rss'),
     path('admin/', admin.site.urls),
     path('', include('blog.urls')),

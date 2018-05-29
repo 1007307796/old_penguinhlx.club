@@ -1,6 +1,6 @@
 import markdown
 from django.shortcuts import render, get_object_or_404
-from .models import Post, Category, Tag
+from blog.models import Post, Category, Tag
 from comments.forms import CommentForm   # 更新文章详情页的视图函数
 from django.views.generic import ListView, DetailView   # 引入类列表（多条）视图包和类数据（某一条）视图包
 from django.utils.text import slugify   # 引入自动生成目录支持中文的包
@@ -194,7 +194,7 @@ def search(request):
     q = request.GET.get('q')   # get方法提交的数据保存在request.GET的字典中
     error_msg = ''
     if not q:
-        error_msg = "请输入关键词"
+        error_msg = '请输入关键词'
         return render(request, 'blog/index.html', {'error_msg': error_msg})
     post_list = Post.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
     # icontains为查询表达式，用法：模型属性后面跟两个下划线

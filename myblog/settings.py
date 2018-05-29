@@ -41,8 +41,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',   # 注册网站基本框架应用
     'comments',   # 注册网站评论应用
+    'haystack',   # 高级搜索应用
     # 'gunicorn',
 ]
+#  django haystack搜索引擎
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'blog.whoosh_cn_backends.WhooshEngine',   # 指定引擎
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),   # 引索文件存放位置
+    },
+}
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'   # 指定什么时候更新
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -124,4 +134,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')   # 指明根目录下的静态文件夹，便于nginx调用
+
+
 
