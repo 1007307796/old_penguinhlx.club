@@ -1,8 +1,10 @@
 from django.conf.urls import url
 from . import views   # .为当前目录下
+from django.views.generic.base import RedirectView
 
 app_name = 'blog'   # 视图函数命名空间，区分以下函数只作用于blog项目
 urlpatterns = [
+    url('favicon\.ico', RedirectView.as_view(url='/static/media/favicon.ico')),
     url('post/(?P<pk>[0-9]+)/', views.PostDetailView.as_view(), name='detail'),
     # 正则表达式匹配以post/开头，后跟一个至少一位数的数字，并且以/符号结尾
     # 正则式()里面为提取参数，传给视图detail函数
