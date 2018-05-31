@@ -30,7 +30,7 @@ class Post(models.Model):
     body = models.TextField()   # 文章正文
     created_time = models.DateTimeField()
     modified_time = models.DateTimeField()   # 文章创建时间和最后一次修改时间
-    excerpt = models.CharField(max_length=200, blank=True)   # 文章摘要 设置CharField允许空值
+    excerpt = models.CharField(max_length=40, blank=True)   # 文章摘要 设置CharField允许空值
     category = models.ForeignKey(Category, on_delete=models.CASCADE)   # 将分类设置为一对多关系
     tags = models.ManyToManyField(Tag, blank=True)   # 将标签设置为多对多关系
     author = models.ForeignKey(User, on_delete=models.CASCADE)   # 将作者设置为一对多关系
@@ -52,7 +52,7 @@ class Post(models.Model):
             md = markdown.Markdown(extensions=['markdown.extensions.extra',
                                                'markdown.extensions.codehilite',
             ])   # 实例化markdown类，用于渲染body文本，这里为什么
-            self.excerpt = strip_tags(md.convert(self.body))[:54]
+            self.excerpt = strip_tags(md.convert(self.body))[:42]
             # 转换makedown为html-->去html标签-->复制给摘录对象
         super(Post, self).save(*args, **kwargs)   # 调用父类，保存文章数据库
 
