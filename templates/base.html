@@ -6,11 +6,7 @@
     <!-- meta -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <object>
-        <param name="wmode" value="transparent" />
-        <embed src="http://cdn.abowman.com/widgets/penguins/penguins.swf?up_backgroundImage=http://&up_numBabies=0&up_penguinsName=Penguins&up_numPenguins=1&up_backgroundColor=FFFFFF&" style="position:fixed;width:100%;height:100%;" wmode="Transparent">
-        </embed>
-    </object>
+
 	<!--添加浏览器自适应-->
     <!-- css -->
     <link rel="stylesheet" href="{% static 'blog/css/pagination.css' %}">
@@ -38,6 +34,8 @@
     </style>
 </head>
 <body>
+<embed src="http://cdn.abowman.com/widgets/penguins/penguins.swf?up_backgroundImage=http://&up_numBabies=0&up_penguinsName=Penguins&up_numPenguins=1&up_backgroundColor=FFFFFF&" style="position:fixed;width:100%;height:100%;" quality="high" wmode="Transparent">
+</embed>
 <div class="container">
     <header id="site-header">
         <div class="row">
@@ -73,7 +71,7 @@
                         </form>
                     </div>
                 </div>
-            </div><!-- col-md-8 -->
+            <hr style="height:1px; background-color:gray;width:50%;float:right;"></div><!-- col-md-8 -->
         </div>
     </header>
     <a href="https://github.com/1007307796" class="github-corner" aria-label="View source on Github">
@@ -87,7 +85,6 @@
 </div>
 <div class="copyrights">Collect from <a href="http://www.cssmoban.com/">网页模板</a></div>
 <div class="copyrights">Modified by <a href="http://zmrenwu.com/">追梦人物的博客</a></div>
-
 <div class="content-body">
     <div class="container">
         <div class="row">
@@ -175,7 +172,6 @@
         </div>
     </div>
 </footer>
-
 <!-- Mobile Menu -->
 <div class="overlay overlay-hugeinc">
     <button type="button" class="overlay-close"><span class="ion-ios-close-empty"></span></button>
@@ -188,7 +184,6 @@
         </ul>
     </nav>
 </div>
-
 <script src="{% static 'blog/js/script.js' %}"></script>
 </body>
 </html>

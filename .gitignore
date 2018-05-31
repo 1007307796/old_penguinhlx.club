@@ -2,3 +2,4 @@
 db.sqlite3
 fabfile.py
 __pycache__/fabfile.cpython-35.pyc
+*.toc
