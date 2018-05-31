@@ -13,7 +13,7 @@
                 <span class="views-count"><a href="{{post.get_absolute_url}}">{{post.views}} 阅读</a></span>
             </div>
         </header>
-        <div class="entry-content clearfix">
+        <div class="entry-content clearfix" id="detail_post">
             {{ post.body|safe }}<!--解除django的安全过滤(Filter)设置/ | 为管道符号-->
             <div class="widget-tag-cloud">
                 <ul>

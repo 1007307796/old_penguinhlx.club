@@ -247,6 +247,14 @@ img {
     color: #000;
 }
 
+#index_excerpt{
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+#detail_post{
+    word-break: break-all;
+    word-wrap: break-word;
+}
 /**
  * 4.1 - Read More Button CSS 3 style
  */
