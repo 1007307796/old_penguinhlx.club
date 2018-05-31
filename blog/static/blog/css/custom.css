@@ -214,8 +214,8 @@ img {
 }
 
 .post {
-    background: #fff;
     padding: 30px 30px 0;
+    background-color:#FFF
 }
 
 .entry-title {
@@ -336,8 +336,13 @@ img {
  */
 
 .widget {
-    background: #fff;
     padding: 30px 0 0;
+    background-color:#FFF
+    margin-top: 60px;
+    margin-bottom: 60px;
+    padding: 25px;
+    -webkit-box-shadow: 0 0 5px rgba(202, 203, 203, .5);
+    -moz-box-shadow: 0 0 5px rgba(202, 203, 204, .5);
 }
 
 .widget-title {
