@@ -239,6 +239,14 @@ img {
     color: #000;
 }
 
+.entry-content p{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 90%;
+}
+
+
 .post-category::after,
 .post-date::after,
 .post-author::after,
