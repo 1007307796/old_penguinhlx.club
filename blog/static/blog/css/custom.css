@@ -255,6 +255,9 @@ img {
     word-break: break-all;
     word-wrap: break-word;
 }
+.entry-content a{
+    color:#337ab7;
+}
 /**
  * 4.1 - Read More Button CSS 3 style
  */
@@ -443,6 +446,9 @@ img {
     margin-bottom: 10px;
     padding: 3px 8px;
     border: 1px solid #ddd;
+}
+.widget-tag-cloud ul li a{
+    color: #333;
 }
 
 .widget-content ul ul {
