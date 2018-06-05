@@ -23,7 +23,7 @@ class IndexView(ListView):   # 类视图
     model = Post
     template_name = 'blog/index.html'
     context_object_name = 'post_list'   # 指定获取的模型列表数据保存的变量名,将传递给模板
-    paginate_by = 3   # 开启分页功能
+    paginate_by = 10   # 开启分页功能
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)  # 获取父类生成的字典
